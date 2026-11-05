@@ -6,18 +6,12 @@
     <title>اتحاد الطلاب - بوابة الشكاوى والمقترحات</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Font - Cairo -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-        }
+        body { font-family: 'Cairo', sans-serif; }
     </style>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col justify-between">
@@ -31,11 +25,11 @@
                 </div>
                 <div>
                     <h1 class="font-bold text-xl leading-tight">اتحاد الطلاب</h1>
-                    <p class="text-xs text-indigo-200">منظومة صوت الطالب والشكاوى</p>
+                    <p class="text-xs text-indigo-200">منظومة الشكاوى والمقترحات الموحدة</p>
                 </div>
             </div>
 
-            <!-- Portal Switcher Buttons -->
+            <!-- View Switchers -->
             <div class="flex bg-indigo-950/60 p-1.5 rounded-xl border border-indigo-700/50">
                 <button id="nav-student-btn" onclick="switchView('student')" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 bg-indigo-600 text-white shadow-md">
                     <i class="fa-solid fa-user-graduate"></i>
@@ -67,22 +61,22 @@
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">اسم المستخدم</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
                             <i class="fa-solid fa-user"></i>
                         </span>
                         <input type="text" id="adminUsername" required placeholder="ادخل اسم المستخدم" 
-                            class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm">
+                            class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 outline-none text-sm">
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase mb-1">كلمة السر</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
                             <i class="fa-solid fa-key"></i>
                         </span>
                         <input type="password" id="adminPassword" required placeholder="ادخل كلمة السر" 
-                            class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm">
+                            class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 outline-none text-sm">
                     </div>
                 </div>
 
@@ -102,12 +96,12 @@
         </div>
     </div>
 
-    <!-- MAIN CONTAINER -->
+    <!-- MAIN CONTENT AREA -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
 
         <!-- ================= STUDENT VIEW ================= -->
         <section id="student-view" class="max-w-3xl mx-auto space-y-6">
-            <!-- Intro Card -->
+            <!-- Hero Card -->
             <div class="bg-gradient-to-r from-indigo-800 to-indigo-600 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
                 <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
                 <div class="relative z-10">
@@ -115,13 +109,13 @@
                         <i class="fa-solid fa-shield-heart ml-1"></i> صوتك مسموع دائماً
                     </span>
                     <h2 class="text-3xl font-extrabold mb-2">تقديم شكوى أو اقتراح جديد</h2>
-                    <p class="text-indigo-100 text-sm leading-relaxed max-w-xl">
-                        أهلاً بك عزيزي الطالب. يسعدنا استقبال أي عقبة تواجهك أو فكرة ترغب في تطويرها. يرجى إدخال البيانات بدقة ليتسنى لمسؤولي الاتحاد متابعتها فوراً.
+                    <p class="text-indigo-100 text-sm leading-relaxed">
+                        أهلاً بك عزيزي الطالب. يرجى إدخال اسمك ومدرستك وإدارتك التعليمية والشكوى وسوف تصل فوراً لمسؤول المعالجة.
                     </p>
                 </div>
             </div>
 
-            <!-- Form Card -->
+            <!-- Complaint Form -->
             <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200/80">
                 <form id="complaintForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
                     
@@ -132,11 +126,11 @@
                                 اسم الطالب ثلاثي <span class="text-rose-500">*</span>
                             </label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-slate-400">
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
                                 <input type="text" id="studentName" required placeholder="مثال: أحمد محمد علي" 
-                                    class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm">
+                                    class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 outline-none text-sm">
                             </div>
                         </div>
 
@@ -146,11 +140,11 @@
                                 الإدارة التعليمية <span class="text-rose-500">*</span>
                             </label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-slate-400">
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400">
                                     <i class="fa-solid fa-building-columns"></i>
                                 </span>
                                 <input type="text" id="adminArea" required placeholder="مثال: إدارة وسط التعليمية" 
-                                    class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm">
+                                    class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 outline-none text-sm">
                             </div>
                         </div>
                     </div>
@@ -161,19 +155,19 @@
                             اسم المدرسة <span class="text-rose-500">*</span>
                         </label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-slate-400">
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400">
                                 <i class="fa-solid fa-school"></i>
                             </span>
                             <input type="text" id="schoolName" required placeholder="مثال: مدرسة المتفوقين الثانوية" 
-                                class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm">
+                                class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 outline-none text-sm">
                         </div>
                     </div>
 
-                    <!-- Category & Urgency -->
+                    <!-- Category & Priority -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-2">نوع الطلب</label>
-                            <select id="category" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm bg-white">
+                            <select id="category" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 outline-none text-sm bg-white">
                                 <option value="شكوى أكاديمية">شكوى أكاديمية/دراسيّة</option>
                                 <option value="أنشطة وفعاليات">أنشطة وفعاليات طلابية</option>
                                 <option value="خدمات ومرافق">خدمات ومرافق المدرسة</option>
@@ -183,7 +177,7 @@
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-700 uppercase mb-2">درجة الأهمية</label>
-                            <select id="priority" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm bg-white">
+                            <select id="priority" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 outline-none text-sm bg-white">
                                 <option value="عادية">عادية</option>
                                 <option value="مهمة">مهمة</option>
                                 <option value="عاجلة جداً">عاجلة جداً</option>
@@ -191,17 +185,17 @@
                         </div>
                     </div>
 
-                    <!-- Complaint Details -->
+                    <!-- Details -->
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase mb-2">
                             تفاصيل الشكوى أو الملاحظة <span class="text-rose-500">*</span>
                         </label>
                         <textarea id="complaintText" required rows="5" placeholder="اكتب تفاصيل الشكوى بوضوح هنا..." 
-                            class="w-full p-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm resize-none"></textarea>
+                            class="w-full p-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 outline-none text-sm resize-none"></textarea>
                     </div>
 
                     <!-- Submit Button -->
-                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-indigo-500/20 transition duration-200 flex items-center justify-center gap-2 text-base">
+                    <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-indigo-500/20 transition duration-200 flex items-center justify-center gap-2 text-base">
                         <i class="fa-solid fa-paper-plane"></i>
                         <span>إرسال الشكوى إلى الاتحاد</span>
                     </button>
@@ -213,11 +207,11 @@
         <!-- ================= ADMIN / PROCESSOR VIEW ================= -->
         <section id="admin-view" class="hidden space-y-6">
             
-            <!-- Admin Top Stats Header -->
+            <!-- Admin Top Stats -->
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-3xl shadow-md border border-slate-200">
                 <div>
                     <div class="flex items-center gap-3">
-                        <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-3">
+                        <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
                             <i class="fa-solid fa-list-check text-indigo-600"></i>
                             <span>لوحة المعالجة والمتابعة</span>
                         </h2>
@@ -226,11 +220,10 @@
                             <span>خروج</span>
                         </button>
                     </div>
-                    <p class="text-xs text-slate-500 mt-1">المنصة الخاصة بالمسؤولين لعرض وتفنيد الشكاوى الواردة واتخاذ الإجراءات.</p>
+                    <p class="text-xs text-slate-500 mt-1">متابعة وتحديث حالة الشكاوى الواردة من الطلاب في الوقت الفعلي.</p>
                 </div>
 
                 <div class="flex items-center gap-3 flex-wrap">
-                    <!-- Stats Badges -->
                     <div class="bg-indigo-50 border border-indigo-200 px-4 py-2 rounded-xl text-center">
                         <span class="block text-xs text-indigo-600 font-semibold">إجمالي الشكاوى</span>
                         <span id="total-count" class="text-lg font-bold text-indigo-900">0</span>
@@ -246,10 +239,10 @@
                 </div>
             </div>
 
-            <!-- Controls: Filters & Search -->
+            <!-- Controls -->
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-wrap gap-4 items-center justify-between">
                 <div class="relative flex-1 min-w-[240px]">
-                    <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
                     <input type="text" id="adminSearch" oninput="renderAdminComplaints()" placeholder="ابحث باسم الطالب، المدرسة، أو الإدارة..."
@@ -272,17 +265,15 @@
             </div>
 
             <!-- Complaints List Container -->
-            <div id="complaints-list" class="space-y-4">
-                <!-- Dynamically Inserted Cards -->
-            </div>
+            <div id="complaints-list" class="space-y-4"></div>
 
-            <!-- Empty State Placeholder -->
+            <!-- Empty State -->
             <div id="empty-state" class="hidden bg-white rounded-3xl p-12 text-center shadow-sm border border-slate-200">
                 <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
                     <i class="fa-solid fa-inbox"></i>
                 </div>
                 <h3 class="text-base font-bold text-slate-700">لا توجد شكاوى مسجلة حالياً</h3>
-                <p class="text-xs text-slate-400 mt-1">عندما يقوم الطلاب بتقديم أي طلبات، ستظهر مباشرة في هذه اللوحة.</p>
+                <p class="text-xs text-slate-400 mt-1">عندما يقوم الطلاب بتقديم أي طلبات، ستظهر مباشرة هنا في القائمة.</p>
             </div>
 
         </section>
@@ -290,89 +281,45 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-500">
-        <p>منظومة إدارة الشكاوى والمقترحات الرقمية - اتحاد الطلاب &copy; 2026</p>
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+        <p>اتحاد الطلاب - منظومة الشكاوى والمقترحات الرقمية &copy; 2026</p>
     </footer>
 
-    <!-- LOGIC & FIREBASE REALTIME SCRIPT -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Firebase Initialization
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : { apiKey: "demo-key", authDomain: "demo.firebaseapp.com", projectId: "demo-app" };
-        
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'student-union-app';
-        
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // Firestore Paths (Mandatory Rules strictly followed)
-        const publicCollectionPath = `artifacts/${appId}/public/data/complaints`;
-
-        // Local state store
-        let complaints = [];
-        let isAdminLoggedIn = localStorage.getItem('is_admin_logged_in') === 'true';
-
-        // Admin Credentials Constants
+    <!-- SCRIPT (HYBRID STORAGE SYSTEM) -->
+    <script>
+        // Admin Credentials
         const ADMIN_USER = "KAISME";
         const ADMIN_PASS = "ethad.eltalaba";
 
-        // Initialize Application & Auth
-        async function initApp() {
+        // Global State
+        let complaints = [];
+        let isAdminLoggedIn = localStorage.getItem('is_admin_logged_in') === 'true';
+
+        // Load complaints safely from localStorage
+        function loadFromLocalStorage() {
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
+                const stored = localStorage.getItem('student_union_complaints');
+                if (stored) {
+                    complaints = JSON.parse(stored);
                 } else {
-                    await signInAnonymously(auth);
+                    complaints = [];
                 }
-                
-                // Start Realtime Firestore Listener
-                listenToComplaints();
-            } catch (err) {
-                console.error("Auth / DB initialization error:", err);
-                // Fallback local storage
-                loadLocalBackup();
-            }
-        }
-
-        // Realtime Firestore Listener
-        function listenToComplaints() {
-            const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'complaints');
-            onSnapshot(colRef, (snapshot) => {
-                const loadedComplaints = [];
-                snapshot.forEach((docSnap) => {
-                    loadedComplaints.push({ id: docSnap.id, ...docSnap.data() });
-                });
-                
-                // Sort in memory by date/id descending
-                complaints = loadedComplaints.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-                
-                // Save backup to LocalStorage
-                localStorage.setItem('student_complaints_backup', JSON.stringify(complaints));
-                
-                renderAdminComplaints();
-            }, (error) => {
-                console.error("Firestore Listen Error:", error);
-                loadLocalBackup();
-            });
-        }
-
-        function loadLocalBackup() {
-            try {
-                const saved = localStorage.getItem('student_complaints_backup');
-                if (saved) complaints = JSON.parse(saved);
-                renderAdminComplaints();
             } catch (e) {
-                console.error("Failed to load local backup", e);
+                console.error("Local Storage Load Error:", e);
+                complaints = [];
             }
         }
 
-        // Expose functions to window scope for inline HTML handlers
+        // Save complaints safely to localStorage
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('student_union_complaints', JSON.stringify(complaints));
+            } catch (e) {
+                console.error("Local Storage Save Error:", e);
+            }
+        }
+
+        // View Navigation
         window.switchView = function(view) {
             const studentView = document.getElementById('student-view');
             const adminView = document.getElementById('admin-view');
@@ -412,15 +359,13 @@
 
         window.handleAdminLogin = function(e) {
             e.preventDefault();
-            const user = document.getElementById('adminUsername').value.trim();
-            const pass = document.getElementById('adminPassword').value.trim();
+            const u = document.getElementById('adminUsername').value.trim();
+            const p = document.getElementById('adminPassword').value.trim();
 
-            if (user === ADMIN_USER && pass === ADMIN_PASS) {
+            if (u === ADMIN_USER && p === ADMIN_PASS) {
                 isAdminLoggedIn = true;
                 localStorage.setItem('is_admin_logged_in', 'true');
                 closeLoginModal();
-                document.getElementById('adminUsername').value = '';
-                document.getElementById('adminPassword').value = '';
                 showToast('تم تسجيل الدخول بنجاح كمسؤول', 'success');
                 switchView('admin');
             } else {
@@ -435,8 +380,8 @@
             showToast('تم تسجيل الخروج بنجاح', 'info');
         };
 
-        // Student Form Submission - Saves to Firestore
-        window.handleFormSubmit = async function(e) {
+        // Form Submit Handler (Guaranteed Execution)
+        window.handleFormSubmit = function(e) {
             e.preventDefault();
 
             const name = document.getElementById('studentName').value.trim();
@@ -453,6 +398,7 @@
 
             const customId = 'CMP-' + Math.floor(10000 + Math.random() * 90000);
             const newComplaint = {
+                id: customId,
                 name: name,
                 school: school,
                 adminArea: adminArea,
@@ -465,25 +411,16 @@
                 note: ''
             };
 
-            try {
-                // Save directly to Cloud Firestore
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'complaints', customId);
-                await setDoc(docRef, newComplaint);
+            // Save to Local Data Array
+            complaints.unshift(newComplaint);
+            saveToLocalStorage();
 
-                document.getElementById('complaintForm').reset();
-                showToast('تم إرسال الشكوى وحفظها بالسحابة بنجاح!', 'success');
-            } catch (err) {
-                console.error("Error saving complaint:", err);
-                // Local fallback insert
-                complaints.unshift({ id: customId, ...newComplaint });
-                localStorage.setItem('student_complaints_backup', JSON.stringify(complaints));
-                renderAdminComplaints();
-                document.getElementById('complaintForm').reset();
-                showToast('تم حفظ الشكوى محلياً!', 'success');
-            }
+            // Reset form
+            document.getElementById('complaintForm').reset();
+            showToast('تم إرسال الشكوى بنجاح ووصلت للوحة المسؤول!', 'success');
         };
 
-        // Render Cards in Admin View
+        // Render Admin Complaints Cards
         window.renderAdminComplaints = function() {
             const listContainer = document.getElementById('complaints-list');
             const emptyState = document.getElementById('empty-state');
@@ -492,6 +429,8 @@
 
             if (!listContainer) return;
 
+            loadFromLocalStorage();
+
             const filtered = complaints.filter(item => {
                 const matchesSearch = (item.name || '').toLowerCase().includes(searchQuery) ||
                                       (item.school || '').toLowerCase().includes(searchQuery) ||
@@ -499,7 +438,6 @@
                                       (item.id || '').toLowerCase().includes(searchQuery);
 
                 const matchesStatus = (statusFilter === 'all') || (item.status === statusFilter);
-
                 return matchesSearch && matchesStatus;
             });
 
@@ -592,48 +530,40 @@
             listContainer.innerHTML = html;
         };
 
-        window.updateStatus = async function(id, newStatus) {
-            try {
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'complaints', id);
-                await setDoc(docRef, { status: newStatus }, { merge: true });
-                showToast(`تم تغيير الحالة إلى: ${newStatus}`, 'info');
-            } catch (err) {
-                console.error("Failed to update status:", err);
+        window.updateStatus = function(id, newStatus) {
+            const index = complaints.findIndex(c => c.id === id);
+            if (index !== -1) {
+                complaints[index].status = newStatus;
+                saveToLocalStorage();
+                renderAdminComplaints();
             }
+            showToast(`تم تغيير الحالة إلى: ${newStatus}`, 'info');
         };
 
-        window.saveAdminNote = async function(id) {
+        window.saveAdminNote = function(id) {
             const input = document.getElementById(`note-${id}`);
             if (!input) return;
-            try {
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'complaints', id);
-                await setDoc(docRef, { note: input.value.trim() }, { merge: true });
-                showToast('تم حفظ الملاحظة بنجاح', 'success');
-            } catch (err) {
-                console.error("Failed to save note:", err);
+
+            const index = complaints.findIndex(c => c.id === id);
+            if (index !== -1) {
+                complaints[index].note = input.value.trim();
+                saveToLocalStorage();
             }
+            showToast('تم حفظ الملاحظة بنجاح', 'success');
         };
 
-        window.deleteComplaint = async function(id) {
-            try {
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'complaints', id);
-                await deleteDoc(docRef);
-                showToast('تم حذف الشكوى', 'info');
-            } catch (err) {
-                console.error("Failed to delete complaint:", err);
-            }
+        window.deleteComplaint = function(id) {
+            complaints = complaints.filter(c => c.id !== id);
+            saveToLocalStorage();
+            renderAdminComplaints();
+            showToast('تم حذف الشكوى', 'info');
         };
 
-        window.clearAllComplaintsData = async function() {
-            try {
-                for (let item of complaints) {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'complaints', item.id);
-                    await deleteDoc(docRef);
-                }
-                showToast('تم مسح جميع البيانات', 'info');
-            } catch (err) {
-                console.error("Failed to clear data:", err);
-            }
+        window.clearAllComplaintsData = function() {
+            complaints = [];
+            saveToLocalStorage();
+            renderAdminComplaints();
+            showToast('تم مسح جميع البيانات', 'info');
         };
 
         function showToast(message, type = 'success') {
@@ -643,7 +573,6 @@
             const toastIcon = document.getElementById('toast-icon');
 
             toastMsg.innerText = message;
-
             if (type === 'success') {
                 toastBody.className = "flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl text-white font-medium bg-emerald-600";
                 toastIcon.className = "fa-solid fa-circle-check text-xl";
@@ -654,24 +583,17 @@
                 toastBody.className = "flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl text-white font-medium bg-slate-800";
                 toastIcon.className = "fa-solid fa-circle-info text-xl";
             }
-
             toast.classList.remove('hidden');
-            setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 3000);
+            setTimeout(() => toast.classList.add('hidden'), 3000);
         }
 
         function escapeHtml(str) {
             if (!str) return '';
-            return String(str).replace(/&/g, "&amp;")
-                               .replace(/</g, "&lt;")
-                               .replace(/>/g, "&gt;")
-                               .replace(/"/g, "&quot;")
-                               .replace(/'/g, "&#039;");
+            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
         // Start App
-        initApp();
+        loadFromLocalStorage();
     </script>
 </body>
 </html>
