@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اتحاد الطلاب - بوابة الشكاوى والمقترحات</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font - Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <!-- Header Navigation -->
+    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="bg-indigo-700 p-2.5 rounded-xl shadow-inner">
+                    <i class="fa-solid fa-graduation-cap text-2xl text-amber-400"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-xl leading-tight">اتحاد الطلاب</h1>
+                    <p class="text-xs text-indigo-200">منظومة صوت الطالب والشكاوى</p>
+                </div>
+            </div>
+
+            <!-- Portal Switcher Buttons -->
+            <div class="flex bg-indigo-950/60 p-1.5 rounded-xl border border-indigo-700/50">
+                <button id="nav-student-btn" onclick="switchView('student')" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 bg-indigo-600 text-white shadow-md">
+                    <i class="fa-solid fa-user-graduate"></i>
+                    <span>بوابة الطلاب</span>
+                </button>
+                <button id="nav-admin-btn" onclick="switchView('admin')" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-indigo-300 hover:text-white">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>لوحة المعالجة (المسؤول)</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Login Modal -->
+    <div id="login-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-slate-100 relative">
+            <button onclick="closeLoginModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-600 p-2">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-14 h-14 bg-indigo-100 text-indigo-700 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800">تسجيل دخول المسؤول</h3>
+                <p class="text-xs text-slate-500 mt-1">يرجى إدخال اسم المستخدم وكلمة السر للوصول للوحة المعالجة</p>
+            </div>
+
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">اسم المستخدم</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" id="adminUsername" required placeholder="ادخل اسم المستخدم" 
+                            class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">كلمة السر</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                            <i class="fa-solid fa-key"></i>
+                        </span>
+                        <input type="password" id="adminPassword" required placeholder="ادخل كلمة السر" 
+                            class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl shadow-md transition duration-200 text-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>دخول اللوحة</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 left-5 z-50 hidden transform transition-all duration-300">
+        <div id="toast-body" class="flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl text-white font-medium">
+            <i id="toast-icon" class="text-xl"></i>
+            <span id="toast-msg"></span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- ================= STUDENT VIEW ================= -->
+        <section id="student-view" class="max-w-3xl mx-auto space-y-6">
+            <!-- Intro Card -->
+            <div class="bg-gradient-to-r from-indigo-800 to-indigo-600 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
+                <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+                <div class="relative z-10">
+                    <span class="inline-block px-3 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-bold mb-3 border border-amber-400/30">
+                        <i class="fa-solid fa-shield-heart ml-1"></i> صوتك مسموع دائماً
+                    </span>
+                    <h2 class="text-3xl font-extrabold mb-2">تقديم شكوى أو اقتراح جديد</h2>
+                    <p class="text-indigo-100 text-sm leading-relaxed max-w-xl">
+                        أهلاً بك عزيزي الطالب. يسعدنا استقبال أي عقبة تواجهك أو فكرة ترغب في تطويرها. يرجى إدخال البيانات بدقة ليتسنى لمسؤولي الاتحاد متابعتها فوراً.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Form Card -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200/80">
+                <form id="complaintForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <!-- Student Name -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-2">
+                                اسم الطالب ثلاثي <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-slate-400">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                                <input type="text" id="studentName" required placeholder="مثال: أحمد محمد علي" 
+                                    class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm">
+                            </div>
+                        </div>
+
+                        <!-- Educational Administration -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-2">
+                                الإدارة التعليمية <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-slate-400">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </span>
+                                <input type="text" id="adminArea" required placeholder="مثال: إدارة وسط التعليمية" 
+                                    class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- School Name -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-2">
+                            اسم المدرسة <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-school"></i>
+                            </span>
+                            <input type="text" id="schoolName" required placeholder="مثال: مدرسة المتفوقين الثانوية" 
+                                class="w-full pr-10 pl-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Category & Urgency -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-2">نوع الطلب</label>
+                            <select id="category" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm bg-white">
+                                <option value="شكوى أكاديمية">شكوى أكاديمية/دراسيّة</option>
+                                <option value="أنشطة وفعاليات">أنشطة وفعاليات طلابية</option>
+                                <option value="خدمات ومرافق">خدمات ومرافق المدرسة</option>
+                                <option value="مقترح جديد">مقترح أو فكرة جديدة</option>
+                                <option value="عام">أخرى</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-2">درجة الأهمية</label>
+                            <select id="priority" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm bg-white">
+                                <option value="عادية">عادية</option>
+                                <option value="مهمة">مهمة</option>
+                                <option value="عاجلة جداً">عاجلة جداً</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Complaint Details -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-2">
+                            تفاصيل الشكوى أو الملاحظة <span class="text-rose-500">*</span>
+                        </label>
+                        <textarea id="complaintText" required rows="5" placeholder="اكتب تفاصيل الشكوى بوضوح هنا..." 
+                            class="w-full p-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 outline-none transition text-sm resize-none"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-indigo-500/20 transition duration-200 flex items-center justify-center gap-2 text-base">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>إرسال الشكوى إلى الاتحاد</span>
+                    </button>
+
+                </form>
+            </div>
+        </section>
+
+        <!-- ================= ADMIN / PROCESSOR VIEW ================= -->
+        <section id="admin-view" class="hidden space-y-6">
+            
+            <!-- Admin Top Stats Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-3xl shadow-md border border-slate-200">
+                <div>
+                    <div class="flex items-center gap-3">
+                        <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-3">
+                            <i class="fa-solid fa-list-check text-indigo-600"></i>
+                            <span>لوحة المعالجة والمتابعة</span>
+                        </h2>
+                        <button onclick="logoutAdmin()" class="text-xs bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 px-3 py-1.5 rounded-lg border border-slate-200 transition font-bold flex items-center gap-1.5">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>خروج</span>
+                        </button>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-1">المنصة الخاصة بالمسؤولين لعرض وتفنيد الشكاوى الواردة واتخاذ الإجراءات.</p>
+                </div>
+
+                <div class="flex items-center gap-3 flex-wrap">
+                    <!-- Stats Badges -->
+                    <div class="bg-indigo-50 border border-indigo-200 px-4 py-2 rounded-xl text-center">
+                        <span class="block text-xs text-indigo-600 font-semibold">إجمالي الشكاوى</span>
+                        <span id="total-count" class="text-lg font-bold text-indigo-900">0</span>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 px-4 py-2 rounded-xl text-center">
+                        <span class="block text-xs text-amber-600 font-semibold">قيد المعالجة</span>
+                        <span id="pending-count" class="text-lg font-bold text-amber-900">0</span>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-xl text-center">
+                        <span class="block text-xs text-emerald-600 font-semibold">تم حلها</span>
+                        <span id="resolved-count" class="text-lg font-bold text-emerald-900">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls: Filters & Search -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-wrap gap-4 items-center justify-between">
+                <div class="relative flex-1 min-w-[240px]">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="adminSearch" oninput="renderAdminComplaints()" placeholder="ابحث باسم الطالب، المدرسة، أو الإدارة..."
+                        class="w-full pr-9 pl-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-indigo-600">
+                </div>
+
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <select id="statusFilter" onchange="renderAdminComplaints()" class="px-4 py-2.5 rounded-xl border border-slate-200 text-sm outline-none bg-slate-50 font-medium">
+                        <option value="all">كل الحالات</option>
+                        <option value="جديدة">جديدة</option>
+                        <option value="قيد المعالجة">قيد المعالجة</option>
+                        <option value="تم الحل">تم الحل</option>
+                    </select>
+
+                    <button onclick="clearAllComplaintsData()" class="px-4 py-2.5 rounded-xl text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition border border-rose-200 flex items-center gap-1.5 ml-auto">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span>مسح الكل</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Complaints List Container -->
+            <div id="complaints-list" class="space-y-4">
+                <!-- Dynamically Inserted Cards -->
+            </div>
+
+            <!-- Empty State Placeholder -->
+            <div id="empty-state" class="hidden bg-white rounded-3xl p-12 text-center shadow-sm border border-slate-200">
+                <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                    <i class="fa-solid fa-inbox"></i>
+                </div>
+                <h3 class="text-base font-bold text-slate-700">لا توجد شكاوى مسجلة حالياً</h3>
+                <p class="text-xs text-slate-400 mt-1">عندما يقوم الطلاب بتقديم أي طلبات، ستظهر مباشرة في هذه اللوحة.</p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-500">
+        <p>منظومة إدارة الشكاوى والمقترحات الرقمية - اتحاد الطلاب &copy; 2026</p>
+    </footer>
+
+    <!-- LOGIC & FIREBASE REALTIME SCRIPT -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase Initialization
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : { apiKey: "demo-key", authDomain: "demo.firebaseapp.com", projectId: "demo-app" };
+        
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'student-union-app';
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Firestore Paths (Mandatory Rules strictly followed)
+        const publicCollectionPath = `artifacts/${appId}/public/data/complaints`;
+
+        // Local state store
+        let complaints = [];
+        let isAdminLoggedIn = localStorage.getItem('is_admin_logged_in') === 'true';
+
+        // Admin Credentials Constants
+        const ADMIN_USER = "KAISME";
+        const ADMIN_PASS = "ethad.eltalaba";
+
+        // Initialize Application & Auth
+        async function initApp() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                
+                // Start Realtime Firestore Listener
+                listenToComplaints();
+            } catch (err) {
+                console.error("Auth / DB initialization error:", err);
+                // Fallback local storage
+                loadLocalBackup();
+            }
+        }
+
+        // Realtime Firestore Listener
+        function listenToComplaints() {
+            const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'complaints');
+            onSnapshot(colRef, (snapshot) => {
+                const loadedComplaints = [];
+                snapshot.forEach((docSnap) => {
+                    loadedComplaints.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                
+                // Sort in memory by date/id descending
+                complaints = loadedComplaints.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                
+                // Save backup to LocalStorage
+                localStorage.setItem('student_complaints_backup', JSON.stringify(complaints));
+                
+                renderAdminComplaints();
+            }, (error) => {
+                console.error("Firestore Listen Error:", error);
+                loadLocalBackup();
+            });
+        }
+
+        function loadLocalBackup() {
+            try {
+                const saved = localStorage.getItem('student_complaints_backup');
+                if (saved) complaints = JSON.parse(saved);
+                renderAdminComplaints();
+            } catch (e) {
+                console.error("Failed to load local backup", e);
+            }
+        }
+
+        // Expose functions to window scope for inline HTML handlers
+        window.switchView = function(view) {
+            const studentView = document.getElementById('student-view');
+            const adminView = document.getElementById('admin-view');
+            const navStudentBtn = document.getElementById('nav-student-btn');
+            const navAdminBtn = document.getElementById('nav-admin-btn');
+
+            if (view === 'student') {
+                studentView.classList.remove('hidden');
+                adminView.classList.add('hidden');
+
+                navStudentBtn.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 bg-indigo-600 text-white shadow-md";
+                navAdminBtn.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-indigo-300 hover:text-white";
+            } else {
+                if (!isAdminLoggedIn) {
+                    openLoginModal();
+                    return;
+                }
+
+                studentView.classList.add('hidden');
+                adminView.classList.remove('hidden');
+
+                navAdminBtn.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 bg-indigo-600 text-white shadow-md";
+                navStudentBtn.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-2 text-indigo-300 hover:text-white";
+                
+                renderAdminComplaints();
+            }
+        };
+
+        window.openLoginModal = function() {
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('adminUsername').focus();
+        };
+
+        window.closeLoginModal = function() {
+            document.getElementById('login-modal').classList.add('hidden');
+        };
+
+        window.handleAdminLogin = function(e) {
+            e.preventDefault();
+            const user = document.getElementById('adminUsername').value.trim();
+            const pass = document.getElementById('adminPassword').value.trim();
+
+            if (user === ADMIN_USER && pass === ADMIN_PASS) {
+                isAdminLoggedIn = true;
+                localStorage.setItem('is_admin_logged_in', 'true');
+                closeLoginModal();
+                document.getElementById('adminUsername').value = '';
+                document.getElementById('adminPassword').value = '';
+                showToast('تم تسجيل الدخول بنجاح كمسؤول', 'success');
+                switchView('admin');
+            } else {
+                showToast('اسم المستخدم أو كلمة السر غير صحيحة!', 'error');
+            }
+        };
+
+        window.logoutAdmin = function() {
+            isAdminLoggedIn = false;
+            localStorage.removeItem('is_admin_logged_in');
+            switchView('student');
+            showToast('تم تسجيل الخروج بنجاح', 'info');
+        };
+
+        // Student Form Submission - Saves to Firestore
+        window.handleFormSubmit = async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('studentName').value.trim();
+            const school = document.getElementById('schoolName').value.trim();
+            const adminArea = document.getElementById('adminArea').value.trim();
+            const category = document.getElementById('category').value;
+            const priority = document.getElementById('priority').value;
+            const text = document.getElementById('complaintText').value.trim();
+
+            if (!name || !school || !adminArea || !text) {
+                showToast('يرجى ملء جميع الحقول المطلوبة', 'error');
+                return;
+            }
+
+            const customId = 'CMP-' + Math.floor(10000 + Math.random() * 90000);
+            const newComplaint = {
+                name: name,
+                school: school,
+                adminArea: adminArea,
+                category: category,
+                priority: priority,
+                text: text,
+                date: new Date().toLocaleString('ar-EG'),
+                timestamp: Date.now(),
+                status: 'جديدة',
+                note: ''
+            };
+
+            try {
+                // Save directly to Cloud Firestore
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'complaints', customId);
+                await setDoc(docRef, newComplaint);
+
+                document.getElementById('complaintForm').reset();
+                showToast('تم إرسال الشكوى وحفظها بالسحابة بنجاح!', 'success');
+            } catch (err) {
+                console.error("Error saving complaint:", err);
+                // Local fallback insert
+                complaints.unshift({ id: customId, ...newComplaint });
+                localStorage.setItem('student_complaints_backup', JSON.stringify(complaints));
+                renderAdminComplaints();
+                document.getElementById('complaintForm').reset();
+                showToast('تم حفظ الشكوى محلياً!', 'success');
+            }
+        };
+
+        // Render Cards in Admin View
+        window.renderAdminComplaints = function() {
+            const listContainer = document.getElementById('complaints-list');
+            const emptyState = document.getElementById('empty-state');
+            const searchQuery = document.getElementById('adminSearch')?.value.toLowerCase() || '';
+            const statusFilter = document.getElementById('statusFilter')?.value || 'all';
+
+            if (!listContainer) return;
+
+            const filtered = complaints.filter(item => {
+                const matchesSearch = (item.name || '').toLowerCase().includes(searchQuery) ||
+                                      (item.school || '').toLowerCase().includes(searchQuery) ||
+                                      (item.adminArea || '').toLowerCase().includes(searchQuery) ||
+                                      (item.id || '').toLowerCase().includes(searchQuery);
+
+                const matchesStatus = (statusFilter === 'all') || (item.status === statusFilter);
+
+                return matchesSearch && matchesStatus;
+            });
+
+            document.getElementById('total-count').innerText = complaints.length;
+            document.getElementById('pending-count').innerText = complaints.filter(c => c.status === 'قيد المعالجة' || c.status === 'جديدة').length;
+            document.getElementById('resolved-count').innerText = complaints.filter(c => c.status === 'تم الحل').length;
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            let html = '';
+            filtered.forEach(item => {
+                let priorityClass = "bg-slate-100 text-slate-700";
+                if (item.priority === 'عاجلة جداً') priorityClass = "bg-rose-100 text-rose-700 border border-rose-200 font-bold";
+                else if (item.priority === 'مهمة') priorityClass = "bg-amber-100 text-amber-700 font-semibold";
+
+                let statusClass = "bg-blue-100 text-blue-800 border-blue-200";
+                if (item.status === 'قيد المعالجة') statusClass = "bg-amber-100 text-amber-800 border-amber-200";
+                if (item.status === 'تم الحل') statusClass = "bg-emerald-100 text-emerald-800 border-emerald-200";
+
+                html += `
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition">
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-mono font-bold bg-slate-100 text-slate-600 px-2.5 py-1 rounded-lg">${escapeHtml(item.id)}</span>
+                            <span class="text-xs px-3 py-1 rounded-full font-semibold border ${statusClass}">
+                                ${escapeHtml(item.status)}
+                            </span>
+                            <span class="text-xs px-2.5 py-1 rounded-md ${priorityClass}">
+                                ${escapeHtml(item.priority)}
+                            </span>
+                        </div>
+                        <span class="text-xs text-slate-400 font-medium">
+                            <i class="fa-regular fa-clock ml-1"></i> ${escapeHtml(item.date)}
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 text-sm bg-slate-50 p-4 rounded-xl">
+                        <div>
+                            <span class="text-xs text-slate-400 block font-semibold mb-0.5">اسم الطالب</span>
+                            <span class="font-bold text-slate-800"><i class="fa-solid fa-user-graduate text-indigo-500 ml-1.5"></i>${escapeHtml(item.name)}</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-semibold mb-0.5">المدرسة</span>
+                            <span class="font-bold text-slate-800"><i class="fa-solid fa-school text-indigo-500 ml-1.5"></i>${escapeHtml(item.school)}</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-semibold mb-0.5">الإدارة التعليمية</span>
+                            <span class="font-bold text-slate-800"><i class="fa-solid fa-building-columns text-indigo-500 ml-1.5"></i>${escapeHtml(item.adminArea)}</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <span class="text-xs text-slate-400 block font-semibold mb-1">تفاصيل الشكوى:</span>
+                        <p class="text-sm text-slate-700 leading-relaxed bg-indigo-50/50 p-3.5 rounded-xl border border-indigo-100/50">
+                            ${escapeHtml(item.text)}
+                        </p>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+                        <div class="flex-grow flex gap-2">
+                            <input type="text" id="note-${item.id}" value="${escapeHtml(item.note || '')}" placeholder="إضافة رد أو ملاحظات المسؤول..." 
+                                class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-indigo-600 bg-slate-50">
+                            <button onclick="saveAdminNote('${item.id}')" class="px-3.5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition">
+                                حفظ
+                            </button>
+                        </div>
+
+                        <div class="flex items-center gap-1.5 justify-end">
+                            <button onclick="updateStatus('${item.id}', 'قيد المعالجة')" class="px-3 py-2 rounded-xl text-xs font-bold bg-amber-50 text-amber-700 hover:bg-amber-100 transition border border-amber-200">
+                                قيد المعالجة
+                            </button>
+                            <button onclick="updateStatus('${item.id}', 'تم الحل')" class="px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition border border-emerald-200">
+                                تم الحل
+                            </button>
+                            <button onclick="deleteComplaint('${item.id}')" class="px-2.5 py-2 rounded-xl text-xs text-rose-500 hover:bg-rose-50 transition">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            });
+
+            listContainer.innerHTML = html;
+        };
+
+        window.updateStatus = async function(id, newStatus) {
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'complaints', id);
+                await setDoc(docRef, { status: newStatus }, { merge: true });
+                showToast(`تم تغيير الحالة إلى: ${newStatus}`, 'info');
+            } catch (err) {
+                console.error("Failed to update status:", err);
+            }
+        };
+
+        window.saveAdminNote = async function(id) {
+            const input = document.getElementById(`note-${id}`);
+            if (!input) return;
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'complaints', id);
+                await setDoc(docRef, { note: input.value.trim() }, { merge: true });
+                showToast('تم حفظ الملاحظة بنجاح', 'success');
+            } catch (err) {
+                console.error("Failed to save note:", err);
+            }
+        };
+
+        window.deleteComplaint = async function(id) {
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'complaints', id);
+                await deleteDoc(docRef);
+                showToast('تم حذف الشكوى', 'info');
+            } catch (err) {
+                console.error("Failed to delete complaint:", err);
+            }
+        };
+
+        window.clearAllComplaintsData = async function() {
+            try {
+                for (let item of complaints) {
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'complaints', item.id);
+                    await deleteDoc(docRef);
+                }
+                showToast('تم مسح جميع البيانات', 'info');
+            } catch (err) {
+                console.error("Failed to clear data:", err);
+            }
+        };
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastBody = document.getElementById('toast-body');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.innerText = message;
+
+            if (type === 'success') {
+                toastBody.className = "flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl text-white font-medium bg-emerald-600";
+                toastIcon.className = "fa-solid fa-circle-check text-xl";
+            } else if (type === 'error') {
+                toastBody.className = "flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl text-white font-medium bg-rose-600";
+                toastIcon.className = "fa-solid fa-circle-xmark text-xl";
+            } else {
+                toastBody.className = "flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl text-white font-medium bg-slate-800";
+                toastIcon.className = "fa-solid fa-circle-info text-xl";
+            }
+
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, "&amp;")
+                               .replace(/</g, "&lt;")
+                               .replace(/>/g, "&gt;")
+                               .replace(/"/g, "&quot;")
+                               .replace(/'/g, "&#039;");
+        }
+
+        // Start App
+        initApp();
+    </script>
+</body>
+</html>
